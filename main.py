@@ -192,16 +192,11 @@ class PhysicsFlashcardStudyApp:
         return []
 
     def run_study_session(self):
-        # Calculate the minimum stability needed to "master" the questions
-        # Stability is in days, so we convert study duration to days
-        min_stability_days = max(0.1, self.study_duration.total_seconds() / (24 * 3600))
-
         while datetime.now() - self.start_time < self.study_duration:
             current_time = datetime.now()
 
-            # Check if all questions have reached the desired stability
-            if all(q.stability >= min_stability_days for q in self.questions):
-                print("\n🎉 All questions have reached the desired stability. Study session complete!")
+            if all(q.stability >= self.study_duration.total_seconds() / (24 * 3600) for q in self.questions):
+                print("\n🎉 All questions have reached desired stability. Study session complete!")
                 break
             
             # Find reviewable questions
